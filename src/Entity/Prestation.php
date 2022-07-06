@@ -35,9 +35,13 @@ class Prestation
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Disponibilites::class, orphanRemoval: true)]
     private $disponibilites;
 
+    #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Jour::class, orphanRemoval: true)]
+    private $jours;
+
     public function __construct()
     {
         $this->disponibilites = new ArrayCollection();
+        $this->jours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +133,36 @@ class Prestation
             // set the owning side to null (unless already changed)
             if ($disponibilite->getPrestation() === $this) {
                 $disponibilite->setPrestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Jour>
+     */
+    public function getJours(): Collection
+    {
+        return $this->jours;
+    }
+
+    public function addJour(Jour $jour): self
+    {
+        if (!$this->jours->contains($jour)) {
+            $this->jours[] = $jour;
+            $jour->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJour(Jour $jour): self
+    {
+        if ($this->jours->removeElement($jour)) {
+            // set the owning side to null (unless already changed)
+            if ($jour->getPrestation() === $this) {
+                $jour->setPrestation(null);
             }
         }
 
