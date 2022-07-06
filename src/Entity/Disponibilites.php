@@ -25,6 +25,9 @@ class Disponibilites
     #[ORM\JoinColumn(nullable: false)]
     private $prestation;
 
+    #[ORM\OneToOne(mappedBy: 'disponibilite', targetEntity: Jour::class, cascade: ['persist', 'remove'])]
+    private $jour;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,23 @@ class Disponibilites
     public function setPrestation(?Prestation $prestation): self
     {
         $this->prestation = $prestation;
+
+        return $this;
+    }
+
+    public function getJour(): ?Jour
+    {
+        return $this->jour;
+    }
+
+    public function setJour(Jour $jour): self
+    {
+        // set the owning side of the relation if necessary
+        if ($jour->getDisponibilite() !== $this) {
+            $jour->setDisponibilite($this);
+        }
+
+        $this->jour = $jour;
 
         return $this;
     }
