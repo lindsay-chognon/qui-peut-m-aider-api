@@ -28,6 +28,10 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private $prestation;
 
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $utilisateur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +81,18 @@ class Reservation
     public function setPrestation(?Prestation $prestation): self
     {
         $this->prestation = $prestation;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }
