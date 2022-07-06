@@ -22,6 +22,10 @@ class Adresse
     #[ORM\JoinColumn(nullable: false)]
     private $utilisateur;
 
+    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'adresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $ville;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,6 +51,18 @@ class Adresse
     public function setUtilisateur(Utilisateur $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }

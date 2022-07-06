@@ -26,9 +26,13 @@ class Ville
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Prestation::class)]
     private $prestations;
 
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Adresse::class)]
+    private $adresses;
+
     public function __construct()
     {
         $this->prestations = new ArrayCollection();
+        $this->adresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +88,36 @@ class Ville
             // set the owning side to null (unless already changed)
             if ($prestation->getVille() === $this) {
                 $prestation->setVille(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Adresse>
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): self
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses[] = $adress;
+            $adress->setVille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): self
+    {
+        if ($this->adresses->removeElement($adress)) {
+            // set the owning side to null (unless already changed)
+            if ($adress->getVille() === $this) {
+                $adress->setVille(null);
             }
         }
 
