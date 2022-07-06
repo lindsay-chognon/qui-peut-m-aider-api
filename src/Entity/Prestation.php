@@ -45,6 +45,10 @@ class Prestation
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Reservation::class, orphanRemoval: true)]
     private $reservations;
 
+    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'prestations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $ville;
+
     public function __construct()
     {
         $this->disponibilites = new ArrayCollection();
@@ -215,6 +219,18 @@ class Prestation
                 $reservation->setPrestation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
 
         return $this;
     }
