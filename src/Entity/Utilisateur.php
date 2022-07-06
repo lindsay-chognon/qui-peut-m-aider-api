@@ -47,6 +47,9 @@ class Utilisateur
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Reservation::class, orphanRemoval: true)]
     private $reservations;
 
+    #[ORM\OneToOne(mappedBy: 'utilisateur', targetEntity: Adresse::class, cascade: ['persist', 'remove'])]
+    private $adresse;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -191,6 +194,23 @@ class Utilisateur
                 $reservation->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdresse(): ?Adresse
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(Adresse $adresse): self
+    {
+        // set the owning side of the relation if necessary
+        if ($adresse->getUtilisateur() !== $this) {
+            $adresse->setUtilisateur($this);
+        }
+
+        $this->adresse = $adresse;
 
         return $this;
     }
