@@ -38,6 +38,10 @@ class Prestation
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Jour::class, orphanRemoval: true)]
     private $jours;
 
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'prestations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $categorie;
+
     public function __construct()
     {
         $this->disponibilites = new ArrayCollection();
@@ -165,6 +169,18 @@ class Prestation
                 $jour->setPrestation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
