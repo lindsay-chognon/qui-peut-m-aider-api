@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PrestationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
@@ -29,6 +31,14 @@ class Prestation
 
     #[ORM\Column(type: 'integer')]
     private $statut;
+
+    #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Disponibilites::class, orphanRemoval: true)]
+    private $disponibilites;
+
+    public function __construct()
+    {
+        $this->disponibilites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +101,36 @@ class Prestation
     public function setStatut(int $statut): self
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disponibilites>
+     */
+    public function getDisponibilites(): Collection
+    {
+        return $this->disponibilites;
+    }
+
+    public function addDisponibilite(Disponibilites $disponibilite): self
+    {
+        if (!$this->disponibilites->contains($disponibilite)) {
+            $this->disponibilites[] = $disponibilite;
+            $disponibilite->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibilite(Disponibilites $disponibilite): self
+    {
+        if ($this->disponibilites->removeElement($disponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($disponibilite->getPrestation() === $this) {
+                $disponibilite->setPrestation(null);
+            }
+        }
 
         return $this;
     }
