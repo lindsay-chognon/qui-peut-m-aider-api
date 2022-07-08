@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PrestationRepository::class)]
 #[ApiResource]
@@ -40,6 +42,8 @@ class Prestation
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'prestations')]
     #[ORM\JoinColumn(nullable: false)]
+    //#[Groups('categorie : read')]
+    //#[ApiProperty(readableLink: false, writableLink: false)]
     private $categorie;
 
     #[ORM\OneToMany(mappedBy: 'prestation', targetEntity: Reservation::class, orphanRemoval: true)]
@@ -186,7 +190,7 @@ class Prestation
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(Categorie $categorie): self
     {
         $this->categorie = $categorie;
 
