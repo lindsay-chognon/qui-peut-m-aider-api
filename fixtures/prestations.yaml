@@ -1,0 +1,46 @@
+App\Entity\Ville:
+  ville_{1..10}:
+    ville: <city()>
+    code_postal: <numberBetween(10000, 90000)>
+
+App\Entity\Categorie:
+  categorie_{1..10}:
+    nom: <word()>
+
+App\Entity\Prestation:
+  prestation_{1..10}:
+    titre: <sentence(4)>
+    description: <text()>
+    photo: <image()>
+    taux_horaire: <numberBetween(10, 100)>
+    statut: 0
+    categorie: '@categorie_*'
+    ville: '@ville_*'
+
+App\Entity\Utilisateur:
+  utilisateur_{1..10}:
+    email: <email()>
+    login: <username()>
+    password: <word()>
+    nom: <lastname()>
+    prenom: <firstname()>
+    date_naissance: <dateTimeThisCentury()>
+    photo: <image()>
+    telephone: <phoneNumber()>
+    groupe_utilisateur: 1
+
+App\Entity\Adresse:
+  adresse_{1..2}:
+    utilisateur: '@utilisateur_<numberBetween(1, 10)>'
+    ville: '@ville_*'
+    adresse: <address()>
+
+App\Entity\Disponibilites:
+  disponibilites_{1..10}:
+    datetime_debut: <dateTimeBetween('+10 days', '+14 days')>
+    datetime_fin: <dateTimeBetween('+14 days', '+18 days')>
+    prestation: '@prestation_*'
+
+
+
+
