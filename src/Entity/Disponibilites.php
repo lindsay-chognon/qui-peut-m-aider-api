@@ -15,12 +15,6 @@ class Disponibilites
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'time')]
-    private $debut;
-
-    #[ORM\Column(type: 'time')]
-    private $fin;
-
     #[ORM\ManyToOne(targetEntity: Prestation::class, inversedBy: 'disponibilites')]
     #[ORM\JoinColumn(nullable: false)]
     private $prestation;
@@ -28,33 +22,15 @@ class Disponibilites
     #[ORM\OneToOne(mappedBy: 'disponibilite', targetEntity: Jour::class, cascade: ['persist', 'remove'])]
     private $jour;
 
+    #[ORM\Column(type: 'datetime')]
+    private $datetime_debut;
+
+    #[ORM\Column(type: 'datetime')]
+    private $datetime_fin;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDebut(): ?\DateTimeInterface
-    {
-        return $this->debut;
-    }
-
-    public function setDebut(\DateTimeInterface $debut): self
-    {
-        $this->debut = $debut;
-
-        return $this;
-    }
-
-    public function getFin(): ?\DateTimeInterface
-    {
-        return $this->fin;
-    }
-
-    public function setFin(\DateTimeInterface $fin): self
-    {
-        $this->fin = $fin;
-
-        return $this;
     }
 
     public function getPrestation(): ?Prestation
@@ -82,6 +58,30 @@ class Disponibilites
         }
 
         $this->jour = $jour;
+
+        return $this;
+    }
+
+    public function getDatetimeDebut(): ?\DateTimeInterface
+    {
+        return $this->datetime_debut;
+    }
+
+    public function setDatetimeDebut(\DateTimeInterface $datetime_debut): self
+    {
+        $this->datetime_debut = $datetime_debut;
+
+        return $this;
+    }
+
+    public function getDatetimeFin(): ?\DateTimeInterface
+    {
+        return $this->datetime_fin;
+    }
+
+    public function setDatetimeFin(\DateTimeInterface $datetime_fin): self
+    {
+        $this->datetime_fin = $datetime_fin;
 
         return $this;
     }
